@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节流函数</title>
+</head>
+<body>
+    <!-- 当持续触发事件的时候，保证一段时间以内 只调用一次事件处理函数 -->
+    <!-- 实际应用：表单的提交，典型的案例就是鼠标不断点击触发，规定在n秒内多次点击只有一次生效 -->
+
+    <button id="button">点击</button>
+
+    <script>
+        function throttle(func, wait) {
+            // 我们想要的是，一秒内点击了多少次 只执行一次 
+
+            let timerOut
+            // 相当于办理业务,return形成了一个闭包
+            return function () {
+                if (!timerOut) {
+                    timerOut = setTimeout(function () {
+                        func()
+                        // 办理结束以后，后面的就不办理了
+                        timerOut = null
+                    }, wait)
+                }
+            }
+        }
+
+        function handle() {
+            console.log(Math.random());
+        }
+        document.getElementById('button').onclick = throttle(handle, 2000)
+    </script>
+</body>
+</html>

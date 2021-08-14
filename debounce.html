@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>防抖</title>
+    </head>
+    <body>
+        <input type="text" id="input" />
+        <script>
+            // 防抖实际应用：
+            // 使用echarts时，改变浏览器宽度的时候，希望能够重新渲染，可以使用此函数，提升性能。
+            // 典型的案例就是输入搜索：输入结束后n秒才进行搜索请求，n秒内又输入的内容就重新开始计时，解决搜索bug
+
+
+            // 闭包的应用
+            // 防抖:当持续触发事件，一定时间内没有再触发事件，事件处理函数才会执行一次，如果设定的时间到来之前，又一次触发了事件，就重新开始延时
+            var input = document.getElementById('input')
+            // 防抖的函数
+            function debounce(delay, callback) {
+                let timer
+                return function (value) {
+                    clearTimeout(timer)
+                    // 想要清除的是setTimeout 应该存储timer的变量 timer变量需要一直保存在内存当中
+                    // 如果不想打印之前已经输入的结果 需要清除以前触发的定时器 应该存储这个timer的变量
+                    // 所以一直都要在内存当中 内存的泄露 使用闭包
+                    timer = setTimeout(function () {
+                        // console.log(value) // 输出结果 如果不在里面输出 而是在外面输出
+                        callback(value)
+                    }, delay)
+                }
+            }
+
+            // 在这个地方输出
+            function fn(value) {
+                console.log(value);
+            }
+
+
+            var debounceFunc = debounce(1000,fn)
+            input.addEventListener('keyup', function (e) {
+                debounceFunc(e.target.value)
+            })
+        </script>
+    </body>
+</html>
