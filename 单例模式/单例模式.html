@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 思想：单一职责：形成单例、创建弹窗 -->
     <title>单例模式</title>
 </head>
 <body>
     <button id="loginBtn">登录</button>
     <script>
         // JS单例模式 实现登录
+        // 登录框的职责
         var createLogin = function(a, b, c) {
             console.log(a, b, c);
             var div = document.createElement("div")
             div.innerHTML = '我是登录的弹窗'
+            // 先隐藏
             div.style.display = 'none'
+            // 追加到页面中来
             document.body.appendChild(div)
             return div
         }
 
+        // 将单例的职责
         var getSingle = function (fn) {
             var result;
             return function () {
@@ -28,8 +33,30 @@
         var create = getSingle(createLogin)
         document.getElementById("loginBtn").onclick = function () {
             var loginLay = create(1,2,3)
+            // 点击的时候编程block
             loginLay.style.display = 'block'
         }
+
+
+
+        // es6实现
+        class Person {
+            // new的时候会自动调用该方法
+            constructor(name, sex) {
+                this.name = name
+                this.sex = sex
+                // 实际开发中更多的是做初始化的操作
+            }
+            say() {
+                console.log('学前端很幸福');
+            }
+        }
+
+        let person1 = new Person('星空', '男')
+        console.log(person1.name)
+        person1.say()
+
+        console.log(person1.say === Person.prototype.say)
     </script>
 </body>
 </html>

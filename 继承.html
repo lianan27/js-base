@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>继承</title>
+    </head>
+    <body>
+        <script>
+            // 原型链继承：让子类的原型对象指向父类的实例，当子类的实例找不到对应的属性和方法时，会沿着原型链往上找
+            // 缺点：原型指向同一个实例，当存在两个子类的时候修改其中一个就会影响另一个 并没有实现super功能：对父类进行传参
+            // function Parent() {
+            //     this.name = '张艺兴'
+            // }
+
+            // Parent.prototype.getName = function () {
+            //     return this.name
+            // }
+
+            // function Child() {
+
+            // }
+
+            // Child.prototype = new Parent()
+            // Child.prototype.constructor = Child
+            // const child = new Child()
+
+            // console.log(child.name);
+            // console.log(child.getName());
+
+            // 构造函数继承：在子类的构造函数中执行父类的构造函数，并且对其绑定子类的this
+
+            // function Parent(name) {
+            //     this.name = [name]
+            // }
+
+            // Parent.prototype.getName = function () {
+            //     return this.name
+            // }
+            // function Child() {
+            //     Parent.call(this, '你好呀')
+            // }
+
+            // const child1 = new Child()
+            // const child2 = new Child()
+            // child1.name[0] = '张艺兴'
+            // console.log(child1.name);
+            // console.log(child2.name);
+            // console.log(child2.getName()); // 并不能继承父类原型上的方法 和 属性
+
+            // 组合式继承
+            // 缺点：
+            function Parent(name) {
+                this.name = [name]
+            }
+            // 构造函数继承
+            Parent.prototype.getName = function () {
+                return this.name
+            }
+
+            function Child() {
+                Parent.call(this, '你好呀')
+            }
+            // 原型链继承
+            Child.prototype = new Parent()
+            Child.prototype.constructor = Child
+
+            const child1 = new Child()
+            const child2 = new Child()
+            child1.name[0] = '张艺兴'
+            console.log(child1.name);
+            console.log(child2.name);
+            console.log(child2.getName()); // 并不能继承父类原型上的方法 和 属性
+        </script>
+    </body>
+</html>
